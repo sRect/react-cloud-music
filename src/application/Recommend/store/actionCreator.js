@@ -14,6 +14,11 @@ export const changeRecommendList = (data) => ({
   data: fromJS(data)
 });
 
+export const changeEnterLoading = (data) => ({
+  type: actionTypes.CHANGE_ENTER_LOADING,
+  data
+});
+
 export const getBannerList = () => {
   return dispatch => {
     getBannerRequest()
@@ -30,7 +35,8 @@ export const getRecommendList = () => {
   return dispatch => {
     getRecommendListRequest()
       .then(data => {
-        dispatch(changeRecommendList(data.result))
+        dispatch(changeRecommendList(data.result));
+        dispatch(changeEnterLoading(false)); // 改变 loading
       })
       .catch(err => {
         console.log(err);
