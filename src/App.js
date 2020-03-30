@@ -6,6 +6,7 @@ import routes from './routes';
 import store from './store';
 import { GlobalStyle } from './style';
 import { IconStyle } from './assets/iconfont/iconfont';
+import Loading from './baseUI/loading';
 
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
       <Provider store={store}>
         <GlobalStyle />
         <IconStyle />
-        <Suspense fallback={<span>loading...</span>}>
+        <Suspense fallback={<Loading />}>
           <BrowserRouter>
             <Switch>
               {
