@@ -1,10 +1,12 @@
 import React, { memo, useEffect } from 'react';
 import { connect } from 'react-redux';
+import {forceCheck} from 'react-lazyload';
 import { actionCreators } from './store';
 import Slider from '../../components/slider';
 import RecommendList from '../../components/list';
 import Scroll from '../../baseUI/scroll/index';
 import { Content } from './style';
+import Loading from '../../baseUI/loading/index';
 
 const Recommend = (props) => {
   // //mock 数据
@@ -35,12 +37,13 @@ const Recommend = (props) => {
 
   return (
     <Content>
-      <Scroll className="list">
+      <Scroll className="list" onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerListJS} />
           <RecommendList recommendList={recommendListJS} />
         </div>
       </Scroll>
+      <Loading />
     </Content>
   )
 }
