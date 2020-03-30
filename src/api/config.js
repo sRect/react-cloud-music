@@ -1,11 +1,11 @@
 import axios from 'axios';
 import qs from 'qs';
 
-export const baseURL = 'http://example.com';
+export const baseURL = 'http://localhost:3300';
 
 const axiosInstance = axios.create({
   baseURL,
-  timeout: 5000,
+  // timeout: 5000,
   responseType: 'json',
   // withCredentials: true, // 是否允许带cookie这些
   headers: {
