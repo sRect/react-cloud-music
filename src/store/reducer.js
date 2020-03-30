@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux-immutable';
 import { reducer as recommendReducer } from '../application/Recommend/store';
+import { reducer as singersReducer } from '../application/Singers/store/index';
 
 // const testReducer = (state = 1, action) => {
 //   switch (action.type) {
@@ -16,6 +17,7 @@ import { reducer as recommendReducer } from '../application/Recommend/store';
 
 const allReducer = {
   recommend: recommendReducer,
+  singers: singersReducer,
 }
 
 const rootReducer = combineReducers(allReducer);
