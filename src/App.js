@@ -7,6 +7,7 @@ import store from './store';
 import { GlobalStyle } from './style';
 import { IconStyle } from './assets/iconfont/iconfont';
 import Loading from './baseUI/loading';
+import { Data } from './application/Singers/data';
 
 
 function App() {
@@ -18,9 +19,11 @@ function App() {
         <Suspense fallback={<Loading />}>
           <BrowserRouter>
             <Switch>
-              {
-                renderRoutes(routes)
-              }
+              <Data>
+                {
+                  renderRoutes(routes)
+                }
+              </Data>
               <Redirect from="*" to="/"></Redirect>
             </Switch>
           </BrowserRouter>

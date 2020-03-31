@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useEffect, useContext } from 'react';
 import { connect } from 'react-redux';
 import LazyLoad, { forceCheck } from 'react-lazyload';
 import Scroll from '../../baseUI/scroll';
@@ -21,13 +21,18 @@ import {
   refreshMoreHotSingerList
 } from './store/actionCreators';
 import Loading from '../../baseUI/loading';
+import { CategoryDataContext, CHANGE_CATEGORY, CHANGE_ALPHA, Data } from './data';
 
 const Singers = (props) => {
-  let [category, setCategory] = useState('');
-  let [alpha, setAlpha] = useState('');
+  // let [category, setCategory] = useState('');
+  // let [alpha, setAlpha] = useState('');
   const { singerList, enterLoading, pullUpLoading, pullDownLoading, pageCount } = props;
 
   const { getHotSingerDispatch, updateDispatch, pullDownRefreshDispatch, pullUpRefreshDispatch } = props;
+
+  const [data, dispatch] = useContext(CategoryDataContext);
+
+  const { category, alpha } = data.toJS();
 
   useEffect(() => {
     getHotSingerDispatch();
@@ -35,12 +40,14 @@ const Singers = (props) => {
   }, []);
 
   let handleUpdateAlpha = (val) => {
-    setAlpha(val);
+    // setAlpha(val);
+    dispatch({ type: CHANGE_ALPHA, data: val });
     updateDispatch(category, val);
   }
 
   let handleUpdateCatetory = (val) => {
-    setCategory(val);
+    // setCategory(val);
+    dispatch({ type: CHANGE_CATEGORY, data: val });
     updateDispatch(val, alpha);
   }
 
@@ -65,7 +72,8 @@ const Singers = (props) => {
 
   return (
     <div>
-      <NavContainer>
+      <Data>
+        <NavContainer>
         <Horizen
           list={categoryTypes}
           title={"分类 (默认热门):"}
@@ -79,7 +87,7 @@ const Singers = (props) => {
           oldVal={alpha}
         ></Horizen>
       </NavContainer>
-      <ListContainer>
+        <ListContainer>
         <Scroll
           pullUp={handlePullUp}
           pullDown={handlePullDown}
@@ -108,6 +116,7 @@ const Singers = (props) => {
         </Scroll>
         <Loading show={enterLoading}></Loading>
       </ListContainer>
+      </Data>
     </div>
   )
 }
