@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import LazyLoad, { forceCheck } from 'react-lazyload';
 import Scroll from '../../baseUI/scroll';
 import Horizen from '../../baseUI/horizen-item';
 import { categoryTypes, alphaTypes } from '../../api/config';
@@ -19,11 +20,14 @@ import {
   changePullDownLoading,
   refreshMoreHotSingerList
 } from './store/actionCreators';
+import Loading from '../../baseUI/loading';
 
 const Singers = (props) => {
   let [category, setCategory] = useState('');
   let [alpha, setAlpha] = useState('');
-  const { singerList, updateDispatch, getHotSingerDispatch } = props;
+  const { singerList, enterLoading, pullUpLoading, pullDownLoading, pageCount } = props;
+
+  const { getHotSingerDispatch, updateDispatch, pullDownRefreshDispatch, pullUpRefreshDispatch } = props;
 
   useEffect(() => {
     getHotSingerDispatch();
@@ -39,6 +43,14 @@ const Singers = (props) => {
     setCategory(val);
     updateDispatch(val, alpha);
   }
+
+  const handlePullUp = () => {
+    pullUpRefreshDispatch(category, alpha, category === '', pageCount);
+  };
+
+  const handlePullDown = () => {
+    pullDownRefreshDispatch(category, alpha);
+  };
 
   //mock 数据
   // const singerList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(item => {
@@ -68,7 +80,13 @@ const Singers = (props) => {
         ></Horizen>
       </NavContainer>
       <ListContainer>
-        <Scroll>
+        <Scroll
+          pullUp={handlePullUp}
+          pullDown={handlePullDown}
+          pullUpLoading={pullUpLoading}
+          pullDownLoading={pullDownLoading}
+          onScroll={forceCheck}
+        >
           {
             <List>
               {
@@ -76,7 +94,9 @@ const Singers = (props) => {
                   return (
                     <ListItem key={item.accountId + "" + index}>
                       <div className="img_wrapper">
-                        <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%" alt="music" />
+                        <LazyLoad placeholder={<img width="100%" height="100%" src={require('./singer.png')} alt="music" />}>
+                          <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%" alt="music" />
+                        </LazyLoad>
                       </div>
                       <span className="name">{item.name}</span>
                     </ListItem>
@@ -86,6 +106,7 @@ const Singers = (props) => {
             </List>
           }
         </Scroll>
+        <Loading show={enterLoading}></Loading>
       </ListContainer>
     </div>
   )

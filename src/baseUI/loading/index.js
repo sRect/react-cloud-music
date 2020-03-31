@@ -32,9 +32,10 @@ const LoadingWrapper = styled.div`
   }
 `
 
-const Loading = () => {
+const Loading = (props) => {
+  const { show } = props;
   return (
-    <LoadingWrapper>
+    <LoadingWrapper style={show ? { display: "" } : { display: "none" }}>
       <div></div>
       <div></div>
     </LoadingWrapper>
